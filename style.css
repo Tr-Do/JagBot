@@ -1,0 +1,59 @@
+.frame {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.log {
+    display: flex;
+    align-self: center;
+    flex-direction:column;
+    border: 1px solid #ccc;
+    width: 70vw;
+    height: 80vh;
+    overflow-y: auto;
+}
+.msg-sent {
+    align-self: flex-end;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-right: 1rem;
+}
+
+.msg-received {
+    align-self:flex-start;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-left: 1rem;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 10vh;
+    margin-top: 1rem;
+}
+.img-but {
+    background: url('./img/jag-send.png') no-repeat;
+    background-size: contain;
+    background-color: #6b2f3c;
+    width: 70px;
+    height: 70px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+textarea {
+    display:flex;
+    align-items: flex-end;
+    width: 60vw;
+    padding: 10px;
+    font-size: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    resize: none;
+}
