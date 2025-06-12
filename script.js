@@ -4,19 +4,17 @@ import { addHumanMessage, addBotMessage } from './components/chat.js';
 // Add event to send button
 document.getElementById('sendbtn').addEventListener('click', function () {
     const inputt = document.getElementById('prompt')
-    const content = inputt.value.trim();              // Remove empty space
+    const content = inputt.value.replace(/\s+/g, ' ').trim().trim();              // Remove empty space, sanitize input
 
-    if (!content) {
-        return;                                       // Return if input has empty space
-    }
+    if (!content) return;                             // Return if input has empty space
 
     addHumanMessage(content);
-    addBotMessage();
-
-    // Clear input
     inputt.value = ''
-    const log = document.querySelector('.log');
-    log.scrollTop = log.scrollHeight;                 // Make chat log stay at the bottom
+    setTimeout(() => {
+        addBotMessage(content);
+        const log = document.querySelector('.log');
+        log.scrollTop = log.scrollHeight;
+    }, 1000)               // Make chat log stay at the bottom
 })
 
 // Add event to Enter key
