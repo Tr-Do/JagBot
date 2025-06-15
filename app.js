@@ -1,12 +1,34 @@
-import { route } from './core/logic.js';
+import { route, getContext } from './core/logic.js';
 import { addHumanMessage, addBotMessage } from './components/chat.js';
 
+let cooldown = false;
+
+function logInteraction(userInput, botReply) {
+    const context = getContext();
+    console.log(JSON.stringify({
+        timestamp: new Date().toISOString,
+        userInput,
+        botReply,
+        contextSnapshot: context
+    }, null, 2))
+}
 // Add event to send button
 document.getElementById('sendbtn').addEventListener('click', function () {
     const inputt = document.getElementById('prompt')
-    const content = inputt.value.replace(/\s+/g, ' ').trim().trim();              // Remove empty space, sanitize input
+    const content = inputt.value.replace(/\s+/g, ' ').trim();           // Remove empty space, sanitize input
 
     if (!content) return;                             // Return if input has empty space
+
+    if (cooldown) {
+        addBotMessage("Please wait before asking again")
+        return;
+    }
+
+    cooldown = true;
+
+    setTimeout(() => {
+        cooldown = false;
+    }, 30000);
 
     addHumanMessage(content);
     inputt.value = ''
