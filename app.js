@@ -6,7 +6,7 @@ let cooldown = false;
 function logInteraction(userInput, botReply) {
     const context = getContext();
     console.log(JSON.stringify({
-        timestamp: new Date().toISOString,
+        timestamp: new Date().toISOString(),
         userInput,
         botReply,
         contextSnapshot: context
@@ -20,7 +20,7 @@ document.getElementById('sendbtn').addEventListener('click', function () {
     if (!content) return;                             // Return if input has empty space
 
     if (cooldown) {
-        addBotMessage("Please wait before asking again")
+       
         return;
     }
 
@@ -37,7 +37,7 @@ document.getElementById('sendbtn').addEventListener('click', function () {
 // Delay bot response
     setTimeout(() => {
         const reply =  route(content);
-        addBotMessage(content);
+        addBotMessage(reply);
         logInteraction(content, reply);
 
         const log = document.querySelector('.log');

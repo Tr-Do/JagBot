@@ -30,7 +30,7 @@ export function addBotMessage(text) {
     msg.className = 'bot'
     time.className = 'timerep';
 
-    msg.textContent = route(text)
+    msg.textContent = text;
     time.textContent = getTime();
 
     log.appendChild(msg);
