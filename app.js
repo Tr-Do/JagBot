@@ -26,14 +26,20 @@ document.getElementById('sendbtn').addEventListener('click', function () {
 
     cooldown = true;
 
+// Delay user sending message
     setTimeout(() => {
         cooldown = false;
-    }, 30000);
+    }, 3000);
 
     addHumanMessage(content);
     inputt.value = ''
+
+// Delay bot response
     setTimeout(() => {
+        const reply =  route(content);
         addBotMessage(content);
+        logInteraction(content, reply);
+
         const log = document.querySelector('.log');
         log.scrollTop = log.scrollHeight;
     }, 1000)               // Make chat log stay at the bottom
