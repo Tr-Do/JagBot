@@ -2,6 +2,18 @@ import { route, getContext } from './core/logic.js';
 import { addHumanMessage, addBotMessage } from './components/chat.js';
 
 let cooldown = false;
+const userCooldown = new Map();
+const userMessageCount = new Map();
+const cooldown_time = 3000;
+const abuse_window = 30000;
+const abuse_limit = 10;
+
+// Message rate limiting
+function handleMessage(userId, message, now = Date.now()) {
+    if (userCooldown.has(userId) && now - userCooldown.get(userId) < cooldown_time){
+        return {blocked:true, reason: 'cooldown'}
+    }
+    }
 
 function logInteraction(userInput, botReply) {
     const context = getContext();
