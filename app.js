@@ -13,7 +13,17 @@ function handleMessage(userId, message, now = Date.now()) {
     if (userCooldown.has(userId) && now - userCooldown.get(userId) < cooldown_time){
         return {blocked:true, reason: 'cooldown'}
     }
-    }
+}
+
+// Track abuse
+if (!userMessageCount.has(userId)) {
+    userMessageCount.set(userId, []);
+}
+const allTimestamp = userMessageCount.get(userId);
+// filter out old timestamp
+const lastTImestamp = allTimestamp.filter(timestamp => (now - timestamp) < abuse_window);
+lastTimestamp.push(now);
+userMessageCount.set(userId, lastTImestamp);
 
 function logInteraction(userInput, botReply) {
     const context = getContext();
@@ -24,6 +34,11 @@ function logInteraction(userInput, botReply) {
         contextSnapshot: context
     }, null, 2))
 }
+
+// Remove block after validation
+userCooldown.set(userId, now);
+return {block:false};
+
 // Add event to send button
 document.getElementById('sendbtn').addEventListener('click', function () {
     const inputt = document.getElementById('prompt')
