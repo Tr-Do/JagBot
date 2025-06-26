@@ -1,5 +1,6 @@
 import { getTime } from '../utils/time.js';
 import { route } from '../core/logic.js';
+import {handleMessage} from '../utils/rateLimiter.js';
 
 window.addEventListener('DOMContentLoaded', function () {
     const log = this.document.querySelector('.log');
@@ -35,4 +36,5 @@ export function addBotMessage(text) {
 
     log.appendChild(msg);
     log.appendChild(time);
+    log.scrollTop = log.scrollHeight;
 }
