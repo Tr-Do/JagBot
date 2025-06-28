@@ -37,7 +37,7 @@
 
     // Delay bot response
         setTimeout(async () => {
-            const reply =  route(content);
+            const reply =  await route(content);
             addBotMessage(reply);
             logInteraction(content, reply);
 
