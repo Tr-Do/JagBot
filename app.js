@@ -36,7 +36,7 @@
         inputt.value = ''
 
     // Delay bot response
-        setTimeout(() => {
+        setTimeout(async () => {
             const reply =  route(content);
             addBotMessage(reply);
             logInteraction(content, reply);

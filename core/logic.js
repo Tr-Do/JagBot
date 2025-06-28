@@ -1,10 +1,12 @@
+import {getLLMResponse} from "../utils/llm.js"
+;
 let context = {
     lastIntent: null,
     memory: [],
     turnCount: 0
 };
 
-export function route(input) {
+export async function route(input) {
     input = input.toLowerCase();
     context.turnCount += 1;
     context.memory.push(input);
@@ -23,7 +25,8 @@ export function route(input) {
     if (context.lastIntent === 'schedule' && input.includes('change')) {
         return 'To change your schedule, click here'
     }
-    return 'I failed you, Master!'
+    const gptResponse = await getLLMResponse(input);
+    return gptResponse;
 }
 
 export function getContext() {
