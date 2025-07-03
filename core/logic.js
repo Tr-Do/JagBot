@@ -1,6 +1,13 @@
 import {getLLMResponse} from "../utils/llm.js";
-import {getTuitionData} from "../core/scraper/tuition.js"
-import faq from '../data/faq.json' assert {type: "json"};
+
+let faq = [];
+
+async function loadFAQ() {
+    const res = await fetch('../data/faq.json');
+    faq = await res.json();
+}
+
+await loadFAQ();
 
 let context = {
     lastIntent: null,
@@ -13,10 +20,15 @@ export async function route(input) {
     context.turnCount += 1;
     context.memory.push(input);
 
-    for (const [key, response] of Object.entries(faq)){
-        if (input.includes(key)){
+    for (const [key, value] of Object.entries(faq)){
+        if (typeof value === 'object' && value.trigger) {
+            if (value.trigger.some(a => input.includes(a))) {
+                context.lastIntent = key;
+                return value.response;
+            }
+        } else if (typeof value === 'string' && input.includes(key)) {
             context.lastIntent = key;
-            return response;
+            return value;
         }
     }
     

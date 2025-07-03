@@ -1,5 +1,9 @@
 {
-    "schedule": "You can check your scheudle on Jagwire",
-    "tuition": "You can check 2025 tuition here",
-    "clubs": "You can check club activities on Jagsync"
+    "schedule": "You can check your schedule on Jagwire",
+    "clubs": "You can check club activities on Jagsync",
+    "tuition": {
+        "trigger": ["tuition", "cost", "fee", "price", "how much", "attendance cost"],
+        "response": "You can find up-to-date tuition and cost information here:<br><br><a href=\"https://www.tamusa.edu/paying-for-college/tuition/Cost-of-Attendance.html\" target=\"_blank\">https://www.tamusa.edu/paying-for-college/tuition/Cost-of-Attendance.html</a>"
+
+    }
 }
