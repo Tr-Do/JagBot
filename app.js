@@ -19,11 +19,13 @@ function isTokenValid() {
 }
 
 // Add event to send button
-
-
 document.getElementById('sendbtn').addEventListener('click', function () {
     const inputt = document.getElementById('prompt')
     const content = inputt.value.replace(/\s+/g, ' ').trim();           // Remove empty space, sanitize input
+
+    if (!content) {
+        return;
+    }
 
     const result = handleMessage('default-user');
     if (result.blocked) {
