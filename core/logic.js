@@ -1,6 +1,7 @@
 import {getLLMResponse} from "../utils/llm.js";
 
 let faq = [];
+const GPT_INTENT = new Set(['course_advising', 'event_summary']);
 
 async function loadFAQ() {
     const res = await fetch('../data/faq.json');
@@ -18,7 +19,7 @@ let context = {
 export async function route(input) {
     input = input.toLowerCase();
     context.turnCount += 1;
-    context.memory.push(input);
+    context.memory.push(input)
 
     for (const [key, value] of Object.entries(faq)){
         if (typeof value === 'object' && value.trigger) {
@@ -32,8 +33,11 @@ export async function route(input) {
         }
     }
     
-    const gptResponse = await getLLMResponse(input);
-    return gptResponse;
+    if (context.lastIntent && GPT_INTENT.has(context.lastIntent)) {
+        const gptResponse = await getLLMResponse(input);
+        return gptResponse;
+    }
+    return "I don't have that information"
 }
 
 export function getContext() {

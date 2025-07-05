@@ -1,0 +1,7 @@
+.env
+node_modules/
+*.tmp
+*.ini
+*.lnk
+.DS_Store
+Thumbs.db
