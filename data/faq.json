@@ -1,9 +1,225 @@
 {
-    "schedule": "You can check your schedule on Jagwire",
-    "clubs": "You can check club activities on Jagsync",
+    "academic_calendar": {
+        "trigger": [
+            "academic calendar",
+            "calendar",
+            "important dates",
+            "semester dates"
+        ],
+        "response": "You can view the academic calendar here:<br><br><a href=\"https://www.tamusa.edu/academics/academic-calendar/index.html" target=\"_blank\">https://www.tamusa.edu/academics/academic-calendar/index.html</a>"
+    },
+    "blackboard": {
+        "trigger": [
+            "blackboard",
+            "online class",
+            "course site",
+            "assignments",
+            "submit homework"
+        ],
+        "response": "Access your courses and assignments on Canvas:<br><br><a href=\"https://tamusa.blackboard.com/\" target=\"_blank\">https://tamusa.blackboard.com</a>"
+    },
+    "financial_aid": {
+        "trigger": [
+            "financial aid",
+            "fafsa",
+            "scholarship",
+            "grants",
+            "loans",
+            "tafsa"
+        ],
+        "response": "Financial Aid information is available here:<br><br><a href=\"https://www.tamusa.edu/paying-for-college/financial-aid/index.html\" target=\"_blank\">https://www.tamusa.edu/paying-for-college/financial-aid/index.html</a>"
+    },
+    "registration": {
+        "trigger": [
+            "register",
+            "registration",
+            "add class",
+            "drop class",
+            "enroll"
+        ],
+        "response": "You can register, add, or drop classes through Jagwire:<br><br><a href=\"https://jagwire.tamusa.edu/\" target=\"_blank\">https://jagwire.tamusa.edu</a>"
+    },
+    "parking": {
+        "trigger": [
+            "parking",
+            "permit",
+            "where to park",
+            "parking pass"
+        ],
+        "response": "You can purchase a parking permit and check parking info here:<br><br><a href=\"https://www.tamusa.edu/about-us/campus-information/parking-transportation/parking-permit.html\" target=\"_blank\">https://www.tamusa.edu/about-us/campus-information/parking-transportation/parking-permit.html</a>"
+    },
+    "course_catalog": {
+        "trigger": [
+            "course catalog",
+            "courses",
+            "courses",
+            "course listings",
+            "course description",
+        ],
+        "response": "Browse official course offerings and descriptions here:<br><br><a href=\"https://catalog.tamusa.edu/undergraduate/courses‑az/\" target=\"_blank\">TAMUSA Courses A‑Z Catalog</a>"
+    },
+    "emergency": {
+        "trigger": [
+            "emergency",
+            "safety",
+            "police",
+            "help",
+            "urgent"
+        ],
+        "response": "For emergencies, contact University Police:<br><br><a href=\"https://www.tamusa.edu/about-us/campus-information/safety/university-police-department/index.html\" target=\"_blank\">https://www.tamusa.edu/about-us/campus-information/safety/university-police-department/index.html</a>"
+    },
+    "library": {
+        "trigger": [
+            "library",
+            "books",
+            "study space",
+            "research"
+        ],
+        "response": "Library hours, book search, and resources:<br><br><a href=\"https://www.tamusa.edu/library/\" target=\"_blank\">https://www.tamusa.edu/library</a>"
+    },
+    "mental_health": {
+        "trigger": [
+            "mental health",
+            "counseling",
+            "therapy",
+            "depressed",
+            "stressed",
+            "hopeless",
+            "counsel"
+        ],
+        "response": "Free counseling is available for students:<br><br><a href=\"https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html\" target=\"_blank\">https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html</a>"
+    },
+    "career_services": {
+        "trigger": [
+            "career",
+            "resume",
+            "job",
+            "internship",
+            "career fair"
+        ],
+        "response": "Visit Career Services for job prep, resumes, and internships:<br><br><a href=\"https://www.tamusa.edu/mays/index.html\" target=\"_blank\">https://www.tamusa.edu/mays/index.html</a>"
+    },
+    "disability_services": {
+        "trigger": [
+            "disability",
+            "accommodation",
+            "ADA",
+            "accessibility"
+        ],
+        "response": "Disability Support Services can help with accommodations:<br><br><a href=\"https://www.tamusa.edu/Disability-Support-Services/index.html\" target=\"_blank\">https://www.tamusa.edu/Disability-Support-Services/index.html</a>"
+    },
+    "student_handbook": {
+        "trigger": [
+            "student handbook",
+            "code of conduct",
+            "policies"
+        ],
+        "response": "The student handbook and conduct policies are here:<br><br><a href=\"https://www.tamusa.edu/university-policies/student-rights-and-responsibilities/documents/student-handbook.pdf\" target=\"_blank\">https://www.tamusa.edu/university-policies/student-rights-and-responsibilities/documents/student-handbook.pdf</a>"
+    },
+    "clubs": {
+        "trigger": [
+            "club",
+            "activities",
+            "events"
+        ],
+        "response": "You can check club activities on Jagsync: <br><br><a href=\"https://jagsync.tamusa.edu\" target=\"_blank\">https://jagsync.tamusa.edu</a>"
+    },
+    "campus_map": {
+        "trigger": [
+            "map",
+            "campus map",
+            "where is",
+            "building location",
+            "navigate"
+        ],
+        "response": "Find buildings and locations with the campus map:<br><br><a href=\"https://www.tamusa.edu/about-us/business-affairs/documents/campus-map-2024.pdf\" target=\"_blank\">https://www.tamusa.edu/about-us/business-affairs/documents/campus-map-2024.pdf</a>"
+    },
+    "transcript": {
+        "trigger": [
+            "transcript",
+            "grades",
+            "unofficial transcript",
+            "official transcript"
+        ],
+        "response": "Please log in to jagwire to get your transcript:<br><br><a href=\"https://jagwire.tamusa.edu/campusm/home\" target=\"_blank\">https://jagwire.tamusa.edu/campusm/home</a>"
+    },
+    "student_employment": {
+        "trigger": [
+            "student job",
+            "on-campus job",
+            "hire",
+            "employment",
+            "intern",
+            "internship",
+            "research"
+        ],
+        "response": "Check for student jobs through Handshake:<br><br><a href=\"https://tamusa.joinhandshake.com/explore\" target=\"_blank\">https://tamusa.joinhandshake.com/explore</a>"
+    },
+    "international_students": {
+        "trigger": [
+            "international",
+            "visa",
+            "f1",
+            "immigration",
+            "i20",
+            "i-20",
+            "international student",
+            "sponsor",
+            "sponsorship"
+        ],
+        "response": "Support for international students is available here:<br><br><a href=\"https://www.tamusa.edu/international-affairs/international-students/index.html\" target=\"_blank\">https://www.tamusa.edu/international-affairs/international-students/index.html</a>"
+    },
     "tuition": {
-        "trigger": ["tuition", "cost", "fee", "price", "how much", "attendance cost"],
+        "trigger": [
+            "tuition",
+            "cost",
+            "fee",
+            "price",
+            "how much",
+            "attendance cost"
+        ],
         "response": "You can find up-to-date tuition and cost information here:<br><br><a href=\"https://www.tamusa.edu/paying-for-college/tuition/Cost-of-Attendance.html\" target=\"_blank\">https://www.tamusa.edu/paying-for-college/tuition/Cost-of-Attendance.html</a>"
-
+    },
+    "study_rooms": {
+        "trigger": [
+            "study room",
+            "reserve room",
+            "library room",
+            "group study",
+            "where to study"
+        ],
+        "response": "Reserve library study rooms through this link:<br><br><a href=\"https://tamusa.libcal.com/reserve/studyrooms\" target=\"_blank\">https://tamusa.libcal.com/reserve/studyrooms</a>"
+    },
+    "faculty_directory": {
+        "trigger": [
+            "professor",
+            "faculty",
+            "instructor",
+            "contact teacher",
+            "contact professor"
+        ],
+        "response": "Search for faculty contact information here:<br><br><a href=\"https://www.tamusa.edu/directory/\" target=\"_blank\">https://www.tamusa.edu/directory/</a>"
+    },
+    "student_complaints": {
+        "trigger": [
+            "complaint",
+            "report issue",
+            "grievance",
+            "appeal",
+            "problem"
+        ],
+        "response": "File a student complaint or report an issue here:<br><br><a href=\"https://www.tamusa.edu/human-resources/employee-relations/complaint-resolution-form.html\" target=\"_blank\">https://www.tamusa.edu/human-resources/employee-relations/complaint-resolution-form.html</a>"
+    },
+    "report_issue": {
+        "trigger": [
+            "report",
+            "file complaint",
+            "file report",
+            "incident",
+            "report problem",
+            "report student",
+            "report concern"
+        ],
+        "response": "You can report incidents, behavioral concerns, or Title IX violations here:<br><br><a href=\"https://www.tamusa.edu/university-policies/Student-Rights-and-Responsibilities/file-a-report.html\" target=\"_blank\">https://www.tamusa.edu/university-policies/Student-Rights-and-Responsibilities/file-a-report.html</a>"
     }
 }
