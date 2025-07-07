@@ -4,7 +4,11 @@
             "academic calendar",
             "calendar",
             "important dates",
-            "semester dates"
+            "semester dates",
+            "start of classes",
+            "when does school start",
+            "end of semester",
+            "final exam schedule"
         ],
         "response": "You can view the academic calendar here:<br><br><a href=\"https://www.tamusa.edu/academics/academic-calendar/index.html" target=\"_blank\">https://www.tamusa.edu/academics/academic-calendar/index.html</a>"
     },
@@ -25,7 +29,13 @@
             "scholarship",
             "grants",
             "loans",
-            "tafsa"
+            "tafsa",
+            "fafsa deadline",
+            "apply for aid",
+            "how do I get money",
+            "student grants",
+            "aid options",
+            "how to pay tuition"
         ],
         "response": "Financial Aid information is available here:<br><br><a href=\"https://www.tamusa.edu/paying-for-college/financial-aid/index.html\" target=\"_blank\">https://www.tamusa.edu/paying-for-college/financial-aid/index.html</a>"
     },
@@ -35,7 +45,13 @@
             "registration",
             "add class",
             "drop class",
-            "enroll"
+            "enroll",
+            "add classes",
+            "drop deadline",
+            "change class",
+            "swap course",
+            "class enrollment",
+            "Jagwire schedule"
         ],
         "response": "You can register, add, or drop classes through Jagwire:<br><br><a href=\"https://jagwire.tamusa.edu/\" target=\"_blank\">https://jagwire.tamusa.edu</a>"
     },
@@ -44,7 +60,12 @@
             "parking",
             "permit",
             "where to park",
-            "parking pass"
+            "parking pass",
+            "where do I park",
+            "student permit",
+            "parking rules",
+            "campus parking",
+            "buy parking pass"
         ],
         "response": "You can purchase a parking permit and check parking info here:<br><br><a href=\"https://www.tamusa.edu/about-us/campus-information/parking-transportation/parking-permit.html\" target=\"_blank\">https://www.tamusa.edu/about-us/campus-information/parking-transportation/parking-permit.html</a>"
     },
@@ -85,7 +106,12 @@
             "depressed",
             "stressed",
             "hopeless",
-            "counsel"
+            "counsel",
+            "free therapy",
+            "counselor appointment",
+            "talk to someone",
+            "stress help",
+            "depression support"
         ],
         "response": "Free counseling is available for students:<br><br><a href=\"https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html\" target=\"_blank\">https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html</a>"
     },
@@ -120,7 +146,13 @@
         "trigger": [
             "club",
             "activities",
-            "events"
+            "events",
+            "student groups",
+            "join a club",
+            "student org",
+            "student activities",
+            "campus events",
+            "fun stuff to do"
         ],
         "response": "You can check club activities on Jagsync: <br><br><a href=\"https://jagsync.tamusa.edu\" target=\"_blank\">https://jagsync.tamusa.edu</a>"
     },
@@ -139,7 +171,13 @@
             "transcript",
             "grades",
             "unofficial transcript",
-            "official transcript"
+            "official transcript",
+            "print grades",
+            "download transcript",
+            "request transcript",
+            "unofficial grades",
+            "official record",
+            "send transcript"
         ],
         "response": "Please log in to jagwire to get your transcript:<br><br><a href=\"https://jagwire.tamusa.edu/campusm/home\" target=\"_blank\">https://jagwire.tamusa.edu/campusm/home</a>"
     },
@@ -151,7 +189,13 @@
             "employment",
             "intern",
             "internship",
-            "research"
+            "research",
+            "apply on-campus",
+            "student work",
+            "campus job",
+            "job fair",
+            "part time job",
+            "get hired"
         ],
         "response": "Check for student jobs through Handshake:<br><br><a href=\"https://tamusa.joinhandshake.com/explore\" target=\"_blank\">https://tamusa.joinhandshake.com/explore</a>"
     },
@@ -165,7 +209,9 @@
             "i-20",
             "international student",
             "sponsor",
-            "sponsorship"
+            "sponsorship",
+            "renew i20",
+            "renew i-20",
         ],
         "response": "Support for international students is available here:<br><br><a href=\"https://www.tamusa.edu/international-affairs/international-students/index.html\" target=\"_blank\">https://www.tamusa.edu/international-affairs/international-students/index.html</a>"
     },
@@ -176,7 +222,13 @@
             "fee",
             "price",
             "how much",
-            "attendance cost"
+            "attendance cost",
+            "how much is school",
+            "cost per semester",
+            "fee breakdown",
+            "credit hour price",
+            "out of state tuition",
+            "scholarship eligibility"
         ],
         "response": "You can find up-to-date tuition and cost information here:<br><br><a href=\"https://www.tamusa.edu/paying-for-college/tuition/Cost-of-Attendance.html\" target=\"_blank\">https://www.tamusa.edu/paying-for-college/tuition/Cost-of-Attendance.html</a>"
     },
