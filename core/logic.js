@@ -1,7 +1,20 @@
 import { getLLMResponse } from "../utils/llm.js";
+import fs from 'fs';
+const logPath = '/logs/unmatched_input.log'
+
+function logUnmatched(input, memory) {
+    const line = JSON.stringify({
+        timestamp: new Date().toISOString(),
+        input,
+        memory
+    }) + '\n';
+    fs.appendFile(logPath, line, err => {
+        if (err) console.error('Log write failed:', err);
+    });
+}
 
 let faq = [];
-const GPT_INTENT = new Set(['course_advising', 'event_summary']);
+const AI_INTENT = new Set(['course_advising', 'event_summary']);
 
 async function loadFAQ() {
     const res = await fetch('../data/faq.json');
@@ -33,9 +46,9 @@ export async function route(input) {
         }
     }
 
-    if (context.lastIntent && GPT_INTENT.has(context.lastIntent)) {
-        const gptResponse = await getLLMResponse(input);
-        return gptResponse;
+    if (context.lastIntent && AI_INTENT.has(context.lastIntent)) {
+        const aiResponse = await getLLMResponse(input);
+        return aiResponse;
     }
     // Quantify frequent queries
     console.warn("[UNMATCHED INPUT]", {
@@ -43,7 +56,13 @@ export async function route(input) {
         timestamp: new Date().toISOString(),
         memory: [...context.memory]
     });
-    return "I don't have that information"
+    if (context.lastIntent && AI_INTENT.has(context.lastIntent)) {
+        const aiResponse = await getLLMResponse(input);
+        return aiResponse;
+    }
+
+    logUnmatched(input, [...context.memory]);
+    return "I don't have that information";
 }
 
 export function getContext() {
