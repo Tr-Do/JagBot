@@ -1,4 +1,4 @@
-import { getLLMResponse } from "../utils/llm.js";
+import { getLLMResponse, getLLMRephrases } from "../utils/llm.js";
 import fs from 'fs';
 const logPath = '/logs/unmatched_input.log'
 
@@ -46,6 +46,21 @@ export async function route(input) {
         }
     }
 
+    // Rephrase user query to to match faq content
+    const rephrase = await getLLMRephrases(input);
+
+    for (const phrase of rephrase) {
+        for (const [key, value] of Object.entries(faq)) {
+            if (typeof value === 'object' && value.trigger) {
+                if (value.trigger.some(t => phrase, includes(t))) {
+                    context.lastIntent = key;
+                    return value.response;
+                }
+            }
+        }
+    }
+
+    // Initiate AI to response content outside faq and based on tamusa.edu
     if (context.lastIntent && AI_INTENT.has(context.lastIntent)) {
         const aiResponse = await getLLMResponse(input);
         return aiResponse;
