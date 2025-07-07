@@ -52,11 +52,11 @@
         "trigger": [
             "course catalog",
             "courses",
-            "courses",
+            "course",
             "course listings",
-            "course description",
+            "course description"
         ],
-        "response": "Browse official course offerings and descriptions here:<br><br><a href=\"https://catalog.tamusa.edu/undergraduate/courses‑az/\" target=\"_blank\">TAMUSA Courses A‑Z Catalog</a>"
+        "response": "Browse official course offerings and descriptions here:<br><br><a href=\"https://apps.tamusa.edu/course-information/courses/course-InformationP.php\" target=\"_blank\">https://apps.tamusa.edu/course-information/courses/course-InformationP.php</a>"
     },
     "emergency": {
         "trigger": [
