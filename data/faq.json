@@ -10,7 +10,7 @@
             "end of semester",
             "final exam schedule"
         ],
-        "response": "You can view the academic calendar here:<br><br><a href=\"https://www.tamusa.edu/academics/academic-calendar/index.html" target=\"_blank\">https://www.tamusa.edu/academics/academic-calendar/index.html</a>"
+        "response": "You can view the academic calendar here:<br><br><a href=\"https://www.tamusa.edu/academics/academic-calendar/index.html\" target=\"_blank\">https://www.tamusa.edu/academics/academic-calendar/index.html</a>"
     },
     "blackboard": {
         "trigger": [
@@ -211,7 +211,7 @@
             "sponsor",
             "sponsorship",
             "renew i20",
-            "renew i-20",
+            "renew i-20"
         ],
         "response": "Support for international students is available here:<br><br><a href=\"https://www.tamusa.edu/international-affairs/international-students/index.html\" target=\"_blank\">https://www.tamusa.edu/international-affairs/international-students/index.html</a>"
     },

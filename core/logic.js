@@ -1,17 +1,5 @@
 import { getLLMResponse, getLLMRephrases } from "../utils/llm.js";
-import fs from 'fs';
-const logPath = '/logs/unmatched_input.log'
 
-function logUnmatched(input, memory) {
-    const line = JSON.stringify({
-        timestamp: new Date().toISOString(),
-        input,
-        memory
-    }) + '\n';
-    fs.appendFile(logPath, line, err => {
-        if (err) console.error('Log write failed:', err);
-    });
-}
 
 let faq = [];
 const AI_INTENT = new Set(['course_advising', 'event_summary']);
@@ -76,7 +64,15 @@ export async function route(input) {
         return aiResponse;
     }
 
-    logUnmatched(input, [...context.memory]);
+    fetch('http://localhost:3000/log-unmatched', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            input,
+            memory: [...context.memory]
+        })
+    });
     return "I don't have that information";
 }
 
