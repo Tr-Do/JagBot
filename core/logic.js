@@ -63,8 +63,8 @@ export async function route(input) {
         const aiResponse = await getLLMResponse(input);
         return aiResponse;
     }
-
-    fetch('http://localhost:3000/log-unmatched', {
+    const token = sessionStorage.getItem('accessToken');
+    fetch(`http://localhost:3000/log-unmatched?token=${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

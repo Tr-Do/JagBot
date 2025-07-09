@@ -12,15 +12,20 @@ const __dirname = path.dirname(__filename);
 // Load env file
 dotenv.config({ path: path.join(__dirname, './.env') });
 
-
 // Initiate Express, AI
 const app = express();
-const port = 3000;
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+const chatRoutes = require('./routes/chat');
+const tokenRoutes = require('./routes/token');
+
+const port = 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api', chatRoutes);
+app.use('/api', tokenRoutes);
 
 const logFilePath = path.join(__dirname, 'logs', 'unmatched_input.log');
 

@@ -66,12 +66,15 @@ document.getElementById('prompt').addEventListener('keydown', function (e) {
 
 
 // Generate token
-function generateToken() {
-    return crypto.randomUUID();
+async function fetchTokenFromServer() {
+    const res = await fetch('http://localhost:3000/api/generate-token');
+    const data = await res.json();
+    return data.token;
 }
 
 if (!sessionStorage.getItem('accessToken')) {
-    const token = generateToken();
-    sessionStorage.setItem('accessToken', token);
-    sessionStorage.setItem('tokenTimestamp', Date.now());
+    fetchTokenFromServer().then(token => {
+        sessionStorage.setItem('accessToken', token);
+        sessionStorage.setItem('tokenTimestamp', Date.now());
+    });
 }
