@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <div class="panel">
+        <h1>ADMIN CONTROL PANEL</h1>
+        <input type="text" id="studentId" placeholder="STUDENT ID">
+        <button onclick="generateToken()">Generate Token</button>
+        <pre id="newToken"></pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Token</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="tokenTable"></tbody>
+        </table>
+    </div>
+    <script>
+        async function generateToken() {
+            const studentId = document.getElementById('studentId').value;
+            const res = await fetch('/api/token/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ studentId })
+            })
+            const data = await res.json();
+            document.getElementById('newToken').textContent = `Token: ${data.token}`;
+            loadToken();
+        }
+        function getTokenStatus(token) {
+            const isExpired = Date.now() - new Date(token.createdAt).getTime() > 30 * 60 * 1000;
+            if (isExpired) return 'Expired'
+            if (token.revoked) return 'Revoked';
+            return 'Active';
+        }
+        async function loadToken() {
+            const res = await fetch('/api/token/list');
+            const tokens = await res.json();
+            const tbody = document.getElementById('tokenTable');
+            tbody.innerHTML = '';
+            for (const t of tokens) {
+                const status = getTokenStatus(t);
+                const row = `<tr>
+                    <td>${t.studentId}</td>
+                    <td>${t.token}</td>
+                    <td>${status}</td>
+                    <td>${status === 'Active' ? `<button onclick="revokeToken('${t.token}')">Revoke</button>` : ''}</td>
+                    <td>${new Date(t.createdAt).toLocaleString()}</td>
+                </tr>`
+                tbody.innerHTML += row;
+            }
+        }
+        async function revokeToken(token) {
+            await fetch('/api/token/revoke', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+            });
+            loadToken();
+        }
+        window.onload = loadToken;
+    </script>
+</body>
+
+</html>
