@@ -40,7 +40,7 @@ export async function route(input) {
     for (const phrase of rephrase) {
         for (const [key, value] of Object.entries(faq)) {
             if (typeof value === 'object' && value.trigger) {
-                if (value.trigger.some(t => phrase, includes(t))) {
+                if (value.trigger.some(t => phrase.includes(t))) {
                     context.lastIntent = key;
                     return value.response;
                 }

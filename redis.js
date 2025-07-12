@@ -10,7 +10,7 @@ async function generateToken(studentId = '') {
         token += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     const meta = JSON.stringify({ studentI, createdAt: Date.now(), revoked: false });
-    await client.setEx(`token:${token}`, 1800, 'valid');
+    await client.setEx(`token:${token}`, 1800, 'meta');
     return token;
 }
 

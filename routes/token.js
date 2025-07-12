@@ -33,7 +33,7 @@ router.get('/token/validate', async (req, res) => {
 });
 router.post('/token/generate', async (req, res) => {
     const { studentId } = req.body;
-    const token = await generateToken(StudentId);
+    const token = await generateToken(studentId);
     res.json({ token });
 });
 router.get('token/list', async (req, res) => {
