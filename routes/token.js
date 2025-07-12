@@ -36,7 +36,7 @@ router.post('/token/generate', async (req, res) => {
     const token = await generateToken(studentId);
     res.json({ token });
 });
-router.get('token/list', async (req, res) => {
+router.get('/token/list', async (req, res) => {
     const data = await listToken();
     res.json(data);
 })
@@ -46,4 +46,4 @@ router.post('/token/revoke', async (req, res) => {
     res.status(200).send('Revoked');
 });
 
-module.exports = router;
+export default router;

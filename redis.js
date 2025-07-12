@@ -9,8 +9,8 @@ async function generateToken(studentId = '') {
     for (let i = 0; i < 10; i++) {
         token += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    const meta = JSON.stringify({ studentI, createdAt: Date.now(), revoked: false });
-    await client.setEx(`token:${token}`, 1800, 'meta');
+    const meta = JSON.stringify({ studentId, createdAt: Date.now(), revoked: false });
+    await client.setEx(`token:${token}`, 1800, meta);
     return token;
 }
 

@@ -9,15 +9,18 @@ import cors from 'cors';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
+
 // Load env file
 dotenv.config({ path: path.join(__dirname, './.env') });
 
 // Initiate Express, AI
 const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const chatRoutes = require('./routes/chat');
-const tokenRoutes = require('./routes/token');
+import chatRoutes from './routes/chat.js';
+import tokenRoutes from './routes/token.js';
 
 const port = 3000;
 

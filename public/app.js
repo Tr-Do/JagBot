@@ -1,6 +1,6 @@
 import { route, getContext } from './core/logic.js';
 import { addHumanMessage, addBotMessage } from './components/chat.js';
-import { handleMessage } from '../utils/rateLimiter.js';
+import { handleMessage } from './utils/rateLimiter.js';
 
 function logInteraction(userInput, botReply) {
     const context = getContext();
@@ -67,14 +67,12 @@ document.getElementById('prompt').addEventListener('keydown', function (e) {
 
 // Generate token
 async function fetchTokenFromServer() {
-    const res = await fetch('http://localhost:3000/api/generate-token');
+    const res = await fetch('http://localhost:3000/api/token/generate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: 'guest' })
+    });
     const data = await res.json();
     return data.token;
 }
 
-if (!sessionStorage.getItem('accessToken')) {
-    fetchTokenFromServer().then(token => {
-        sessionStorage.setItem('accessToken', token);
-        sessionStorage.setItem('tokenTimestamp', Date.now());
-    });
-}

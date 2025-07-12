@@ -1,5 +1,5 @@
 export async function getLLMResponse(input) {
-    const res = await fetch('http://localhost:3000/ask', {
+    const res = await fetch('http://localhost:3000/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: input })
@@ -11,7 +11,7 @@ export async function getLLMResponse(input) {
 export async function getLLMRephrases(input) {
     try {
         console.log("INPUT >>>", input);
-        const res = await fetch('http://localhost:3000/rephrase', {
+        const res = await fetch('http://localhost:3000/api/rephrase', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

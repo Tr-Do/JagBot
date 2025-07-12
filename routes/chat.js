@@ -6,4 +6,4 @@ router.post('/chat', authMiddleware, async (req, res) => {
     res.send({ reply: "Please wait..." })
 });
 
-module.exports = router;
+export default router;
