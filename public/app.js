@@ -64,21 +64,42 @@ document.getElementById('sendbtn').addEventListener('click', function () {
     addHumanMessage(content);
     inputt.value = ''
 
-    // Disable textarea while waiting for bot reply
     const input = document.getElementById('prompt');
     input.disabled = true;
     input.placeholder = 'Waiting for response...';
 
     setTimeout(async () => {
-        const reply = await route(content);
-        addBotMessage(reply);
-        logInteraction(content, reply);
 
+        // Disable textarea while waiting for bot response
+        input.disabled = true;
+        input.placeholder = 'Type in your question...';
+
+        // Display bubble effect before bot response
         const log = document.querySelector('.log');
+        const typingBubble = document.createElement('div');
+        typingBubble.className = 'bot';
+        typingBubble.classList.add('typing-bubble');
+        typingBubble.innerHTML = `
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            `;
+        typingBubble.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span>`;
+        log.appendChild(typingBubble);
         log.scrollTop = log.scrollHeight;
 
+        //Wait for real response
+        const [reply] = await Promise.all([
+            route(content),
+            new Promise(resolve => setTimeout(resolve, 500))
+        ]);
+        typingBubble.remove();
+        addBotMessage(reply);
+        logInteraction(content, reply);
+        log.scrollTop = log.scrollHeight;       //Keep scrolling down after each response
+
+        // Enable input after bot response
         input.disabled = false;
-        input.placeholder = 'Type in your question...';
         input.focus();
     }, 1000);
 })

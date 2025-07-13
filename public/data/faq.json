@@ -101,7 +101,7 @@
     "mental_health": {
         "trigger": [
             "mental health",
-            "counseling",
+            "counselling",
             "therapy",
             "depressed",
             "stressed",
@@ -113,7 +113,7 @@
             "stress help",
             "depression support"
         ],
-        "response": "Free counseling is available for students:<br><br><a href=\"https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html\" target=\"_blank\">https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html</a>"
+        "response": "Free counselling is available for students:<br><br><a href=\"https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html\" target=\"_blank\">https://www.tamusa.edu/student-resources/support/student-counseling-center/mental-health-services.html</a>"
     },
     "career_services": {
         "trigger": [
@@ -273,5 +273,19 @@
             "report concern"
         ],
         "response": "You can report incidents, behavioral concerns, or Title IX violations here:<br><br><a href=\"https://www.tamusa.edu/university-policies/Student-Rights-and-Responsibilities/file-a-report.html\" target=\"_blank\">https://www.tamusa.edu/university-policies/Student-Rights-and-Responsibilities/file-a-report.html</a>"
+    },
+    "academic_advising": {
+        "trigger": [
+            "academic advisor",
+            "advisor",
+            "advisors",
+            "advising appointment",
+            "class advising",
+            "degree planning",
+            "register classes",
+            "schedule advising",
+            "who is my advisor"
+        ],
+        "response": "To meet with an academic advisor or check your assigned advisor, visit the Academic Advising Office:<br><br><a href=\"https://www.tamusa.edu/student-resources/academic-affairs/Undergraduate-Academic-Advising/academic-advising-directory.html\" target=\"_blank\">https://www.tamusa.edu/student-resources/academic-affairs/Undergraduate-Academic-Advising/academic-advising-directory.html</a>"
     }
 }
