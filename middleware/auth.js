@@ -1,6 +1,6 @@
-const { isTokenValid } = require('../redis');
+import { isTokenValid } from '../redis.js';
 
-module.exports = async function (req, res, next) {
+export default async function (req, res, next) {
     let token = null;
 
     if (req.query.token) {

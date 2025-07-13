@@ -16,6 +16,8 @@ dotenv.config({ path: path.join(__dirname, './.env') });
 
 // Initiate Express, AI
 const app = express();
+console.log('Serving static from:', path.join(__dirname, 'public'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -45,7 +47,7 @@ app.post('/log-unmatched', (req, res) => {
     });
 });
 
-app.post('/rephrase', async (req, res) => {
+app.post('/api/rephrase', async (req, res) => {
     const { input } = req.body;
 
     const prompt = [
@@ -116,5 +118,8 @@ app.post('/ask', async (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+})
+
 app.listen(port, () => console.log(`Server is running on port:${port}`));
-console.log("API Key:", process.env.OPENAI_API_KEY);

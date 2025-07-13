@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { generateToken, isTokenValid, revokeToken, listToken } = require('../redis');
+import { generateToken, isTokenValid, revokeToken, listToken } from '../redis.js';
 const rateLimit = new Map();
 
 // Validate token (5 attempts/IP)

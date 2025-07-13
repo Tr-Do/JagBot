@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authMiddleware = require('../middleware/auth');
+import authMiddleware from '../middleware/auth.js';
 
 router.post('/chat', authMiddleware, async (req, res) => {
     res.send({ reply: "Please wait..." })

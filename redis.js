@@ -1,5 +1,5 @@
-const redis = require('redis');
-const { randomBytes } = require('crypto');
+import redis from 'redis'
+import { randomBytes } from 'crypto';
 const client = redis.createClient();
 client.connect();
 
@@ -35,7 +35,8 @@ async function listToken() {
         const data = JSON.parse(raw);
         results.push({ token: key.split(':')[1], ...data });
     }
+    results.sort((a, b) => b.createdAt - a.createdAt);
     return results;
 }
 
-module.exports = { generateToken, isTokenValid, revokeToken, listToken };
+export { generateToken, isTokenValid, revokeToken, listToken };
