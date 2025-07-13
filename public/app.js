@@ -12,6 +12,26 @@ function logInteraction(userInput, botReply) {
     }, null, 2))
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('prompt');
+    if (!input) return;
+
+    // Focus cursor on input upon loading
+    input.focus();
+
+    // Refocus when clicking outside input
+    document.addEventListener('click', (e) => {
+        if (e.target !== input && !input.contains(e.target)) {
+            input.focus();
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (document.activeElement !== input && e.key.length === 1) {
+            input.focus();
+        }
+    });
+});
+
 // validate token
 function isTokenValid() {
     const issuedAt = parseInt(sessionStorage.getItem('tokenTimestamp'), 10);
@@ -26,7 +46,6 @@ document.getElementById('sendbtn').addEventListener('click', function () {
     if (!content) {
         return;
     }
-
     const result = handleMessage('default-user');
     if (result.blocked) {
         let warning = '';
@@ -45,7 +64,11 @@ document.getElementById('sendbtn').addEventListener('click', function () {
     addHumanMessage(content);
     inputt.value = ''
 
-    // Delay bot response
+    // Disable textarea while waiting for bot reply
+    const input = document.getElementById('prompt');
+    input.disabled = true;
+    input.placeholder = 'Waiting for response...';
+
     setTimeout(async () => {
         const reply = await route(content);
         addBotMessage(reply);
@@ -53,7 +76,11 @@ document.getElementById('sendbtn').addEventListener('click', function () {
 
         const log = document.querySelector('.log');
         log.scrollTop = log.scrollHeight;
-    }, 1000)               // Make chat log stay at the bottom
+
+        input.disabled = false;
+        input.placeholder = 'Type in your question...';
+        input.focus();
+    }, 1000);
 })
 
 // Add event to Enter key
@@ -63,7 +90,6 @@ document.getElementById('prompt').addEventListener('keydown', function (e) {
         document.getElementById('sendbtn').click();
     }
 })
-
 
 // Generate token
 async function fetchTokenFromServer() {

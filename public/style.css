@@ -1,3 +1,7 @@
+a {
+    color: #ffc4c4;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     background-image: url("./img/campus.jpg");
@@ -15,16 +19,24 @@ body {
 .log {
     display: flex;
     align-self: center;
-    flex-direction:column;
+    flex-direction: column;
     border: 1px solid #ccc;
     border-radius: 10px;
     width: 70vw;
     height: 80vh;
-    overflow-y: auto;           /* Make the chat scrollable */
+    overflow-y: auto;
+    /* Make the chat scrollable */
     padding-bottom: 3rem;
     background-color: rgba(255, 255, 255, 0.7);
-    
 }
+
+textarea:disabled {
+    background-color: #999595;
+    color: black;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
 .human {
     background-color: #6b2f3cab;
     color: white;
@@ -38,11 +50,13 @@ body {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
 .timestamp {
     align-self: flex-end;
     margin-right: 1.5rem;
     font-size: 0.75rem;
 }
+
 .timerep {
     align-self: flex-start;
     margin-left: 1.5rem;
@@ -52,7 +66,7 @@ body {
 .bot {
     background-color: #6b2f3cab;
     color: white;
-    align-self:flex-start;
+    align-self: flex-start;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -70,6 +84,7 @@ body {
     height: 10vh;
     margin-top: 1rem;
 }
+
 .img-but {
     background: url('./img/jag-send.png') no-repeat;
     background-size: contain;
@@ -82,7 +97,7 @@ body {
 }
 
 textarea {
-    display:flex;
+    display: flex;
     align-items: flex-end;
     width: 65vw;
     padding: 10px;
