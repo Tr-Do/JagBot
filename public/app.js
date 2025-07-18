@@ -89,10 +89,14 @@ document.getElementById('sendbtn').addEventListener('click', function () {
         log.scrollTop = log.scrollHeight;
 
         //Wait for real response
-        const [reply] = await Promise.all([
-            route(content),
-            new Promise(resolve => setTimeout(resolve, 500))
-        ]);
+        const token = sessionStorage.getItem('access_token');
+        const response = await fetch('/llm/chat', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ input: content, token })
+        });
+        const data = await response.json();
+        const reply = data.reply || '[No reply received]';
         typingBubble.remove();
         addBotMessage(reply);
         logInteraction(content, reply);
