@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const OpenAI = require('openai');
+import OpenAI from 'openai';
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const sessionMemory = new Map();
@@ -57,4 +57,4 @@ router.post('/rephrase', async (req, res) => {
         res.status(500).json({ error: "Rephrase error", detail: err.message });
     }
 });
-module.exports = router;
+export default router;
