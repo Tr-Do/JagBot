@@ -38,6 +38,9 @@ function isTokenValid() {
     return Date.now() - issuedAt <= 30 * 60 * 1000;
 }
 
+sessionStorage.setItem('access_token', userProvidedToken);
+const token = sessionStorage.getItem('access_token')
+
 // Add event to send button
 document.getElementById('sendbtn').addEventListener('click', function () {
     const inputt = document.getElementById('prompt')

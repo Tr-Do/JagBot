@@ -1,7 +1,4 @@
 import dotenv from 'dotenv';
-// Load env file
-dotenv.config({ path: path.join(__dirname, './.env') });
-
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -15,7 +12,8 @@ import tokenRoutes from './routes/token.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
+// Load env file
+dotenv.config({ path: path.join(__dirname, './.env') });
 
 // Initiate Express, AI
 const app = express();
