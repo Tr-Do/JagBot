@@ -1,11 +1,11 @@
 import express from 'express';
 const router = express.Router();
-import OpenAI from 'openai';
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const sessionMemory = new Map();
 
 router.post('/chat', async (req, res) => {
+    const OpenAI = (await import('openai')).default;
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const { input, token } = req.body;
     if (!input || !token) return res.status(400).json({ error: "Missing input or token" });
 
@@ -35,6 +35,8 @@ router.post('/chat', async (req, res) => {
 });
 
 router.post('/rephrase', async (req, res) => {
+    const OpenAI = (await import('openai')).default;
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const { input } = req.body;
     const prompt = [
         { role: 'system', content: '...' },

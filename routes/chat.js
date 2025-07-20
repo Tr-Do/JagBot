@@ -1,11 +1,10 @@
 import express from 'express';
 const router = express.Router();
 import authMiddleware from '../middleware/auth.js';
-import OpenAI from 'openai';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 router.post('/chat', authMiddleware, async (req, res) => {
+    const OpenAI = (await import('openai')).default;
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const { input } = req.body;
     try {
         const completion = await openai.chat.completions.create({
