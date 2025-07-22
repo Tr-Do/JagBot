@@ -3,6 +3,7 @@ const router = express.Router();
 import { generateToken, isTokenValid, revokeToken, listToken } from '../redis.js';
 const rateLimit = new Map();
 
+
 // Validate token (5 attempts/IP)
 router.get('/token/validate', async (req, res) => {
     const { token } = req.query;
@@ -31,6 +32,23 @@ router.get('/token/validate', async (req, res) => {
     rateLimit.set(ip, { count: 0, firstFail: null, blockUntil: null });
     return res.status(200).send('Valid');
 });
+router.post('/token/validate', async (req, res) => {
+    const { token } = req.body;
+    if (!token || typeof token != 'string' || token.length !== 5) {
+        return res.status(400).json({ error: 'Invalid token' });
+    }
+    try {
+        const valid = await isTokenValid(token);
+        if (!valid) {
+            return res.status(401).json({ valid: false });
+        }
+        return res.status(200).json({ valid: true });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal error' });
+    }
+});
+
 router.post('/token/generate', async (req, res) => {
     const { studentId } = req.body;
     const token = await generateToken(studentId);

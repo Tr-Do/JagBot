@@ -10,6 +10,14 @@
 </head>
 
 <body>
+    <div id="token-gate"
+        style="position: absolute; inset: 0; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
+        <h2>Enter Access Token</h2>
+        <input id="token-input" placeholder="5-letter token" maxlength="5" style="font-size: 1.2em; padding: 0.5em;" />
+        <button id="submit-token" style="margin-top: 1em; padding: 0.5em 1em;">Submit</button>
+        <div id="token-error" style="color: red; margin-top: 1em;"></div>
+    </div>
+
     <div class="frame">
         <div class="log">
             <div class="bot">Hey there! How can I help you?</div>

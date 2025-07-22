@@ -2,6 +2,22 @@ import { route, getContext } from './core/logic.js';
 import { addHumanMessage, addBotMessage } from './components/chat.js';
 import { handleMessage } from './utils/rateLimiter.js';
 
+(async () => {
+    const token = sessionStorage.getItem('access_token');
+    if (!token) return;
+
+    const res = await fetch('/api/token/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+    });
+    const data = await res.json();
+    if (res.ok && data.valid) {
+        document.getElementById('token-gate').style.display = 'none';
+    }
+})();
+
+
 function logInteraction(userInput, botReply) {
     const context = getContext();
     console.log(JSON.stringify({
@@ -38,8 +54,18 @@ function isTokenValid() {
     return Date.now() - issuedAt <= 30 * 60 * 1000;
 }
 
-sessionStorage.setItem('access_token', userProvidedToken);
-const token = sessionStorage.getItem('access_token')
+// sessionStorage.setItem('access_token', userProvidedToken);
+async function validateToken() {
+    if (!token) return false;
+
+    const res = await fetch('/api/token/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+    });
+    const data = await res.json();
+    return res.ok && data.valid;
+}
 
 // Add event to send button
 document.getElementById('sendbtn').addEventListener('click', function () {
@@ -130,3 +156,22 @@ async function fetchTokenFromServer() {
     return data.token;
 }
 
+document.getElementById('submit-token').addEventListener('click', async () => {
+    const token = document.getElementById('token-input').value.trim().toUpperCase();
+    const errorBox = document.getElementById('token-error');
+
+    const res = await fetch('/api/token/validate', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.valid) {
+        sessionStorage.setItem('access_token', token);
+        sessionStorage.setItem('tokenTimestamp', Date.now().toString());
+        document.getElementById('token-gate').style.display = 'none';
+    } else {
+        errorBox.textContent = 'Invalid or expired token';
+    }
+});
