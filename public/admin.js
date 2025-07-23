@@ -1,3 +1,21 @@
+(async function enforceAdminAuth() {
+    const authed = sessionStorage.getItem('admin_auth');
+    if (authed === 'true') return;
+
+    const pw = prompt('Enter admin password');
+    const res = await fetch('/api/admin/login', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+    });
+    if (!res.ok) {
+        alert('Unauthorized. Redirecting...');
+        location.href = '/';
+    } else {
+        sessionStorage.setItem('admin_auth', 'true');
+    }
+})();
+
 document.getElementById('studentId').addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
         generateToken();

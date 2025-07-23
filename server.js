@@ -8,6 +8,7 @@ import cors from 'cors';
 import llmRouter from './routes/llm.js';
 import chatRoutes from './routes/chat.js';
 import tokenRoutes from './routes/token.js';
+import adminRoutes from './routes/admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use('/api', chatRoutes);
 app.use('/api', tokenRoutes);
 app.use('/llm', llmRouter)
+app.use('/api', adminRoutes);
 
 const logFilePath = path.join(__dirname, 'logs', 'unmatched_input.log');
 
