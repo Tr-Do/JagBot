@@ -2,6 +2,34 @@ a {
     color: #ffc4c4;
 }
 
+#token-gate {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#submit-token {
+    margin-top: 1em;
+    padding: 0.5em 1em;
+}
+
+#token-input {
+    font-size: 1.2em;
+    padding: 0.5em;
+    text-align: center;
+}
+
+#token-error {
+    color: red;
+    margin-top: 1em;
+}
+
+
 body {
     font-family: 'Roboto', sans-serif;
     background-image: url("./img/campus.jpg");

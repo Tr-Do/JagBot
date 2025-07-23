@@ -6,7 +6,11 @@ document.getElementById('studentId').addEventListener('keydown', function (event
 async function generateToken() {
     const studentId = document.getElementById('studentId').value.trim().toUpperCase();
     const output = document.getElementById('newToken');
-
+    const studentIdPattern = /^[JK]\d{8}$/;
+    if (!studentIdPattern.test(studentId)) {
+        output.textContent = 'Error: Invalid Student ID';
+        return;
+    }
     try {
         const res = await fetch('/api/token/generate', {
             method: 'POST',
