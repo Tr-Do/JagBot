@@ -6,9 +6,10 @@ client.connect();
 async function generateToken(studentId = '') {
     const chars = 'qwertyuiQWERTYUIOPASDFGHJKLZXCVBNMopasdfghjklzxcvbnm';
     let token = '';
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
         token += chars.charAt(Math.floor(Math.random() * chars.length));
     }
+    token = token.toUpperCase();
     const meta = JSON.stringify({ studentId, createdAt: Date.now(), revoked: false });
     await client.setEx(`token:${token}`, 1800, meta);
     return token;

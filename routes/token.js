@@ -51,6 +51,10 @@ router.post('/token/validate', async (req, res) => {
 
 router.post('/token/generate', async (req, res) => {
     const { studentId } = req.body;
+    const idPattern = /^[JK]\d{8}$/i;
+    if (!idPattern.test(studentId.trim())) {
+        return res.status(400).json({ error: 'Invalid student ID format' })
+    }
     const token = await generateToken(studentId);
     res.json({ token });
 });

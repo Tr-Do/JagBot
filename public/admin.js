@@ -4,15 +4,26 @@ document.getElementById('studentId').addEventListener('keydown', function (event
     }
 })
 async function generateToken() {
-    const studentId = document.getElementById('studentId').value;
-    const res = await fetch('/api/token/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentId })
-    })
-    const data = await res.json();
-    document.getElementById('newToken').textContent = `Token: ${data.token}`;
-    loadToken();
+    const studentId = document.getElementById('studentId').value.trim().toUpperCase();
+    const output = document.getElementById('newToken');
+
+    try {
+        const res = await fetch('/api/token/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ studentId })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            output.textContent = `Error: ${data.error || 'Token generation failed'}`;
+        } else {
+            output.textContent = `Token ${data.token}`;
+            loadToken();
+        }
+    } catch (err) {
+        output.textContent = 'Request failed';
+    }
+
 }
 function isExpired(createdAt) {
     return Date.now() - createdAt > 30 * 60 * 1000;
