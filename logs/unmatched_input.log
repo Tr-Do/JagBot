@@ -8,3 +8,5 @@
 {"timestamp":"2025-07-13T15:26:34.163Z","input":"advisor","memory":["tuition","advisor"]}
 {"timestamp":"2025-07-13T15:28:10.874Z","input":"advisor","memory":["tuition","advisor"]}
 {"timestamp":"2025-07-13T15:48:03.391Z","input":"advisor","memory":["advisor"]}
+{"timestamp":"2025-07-23T01:09:16.903Z","input":"is it expensive to study here?","memory":["tuition","activities","is it expensive to study here?"]}
+{"timestamp":"2025-07-23T01:09:40.146Z","input":"is it expensive here?","memory":["tuition","is it expensive here?"]}

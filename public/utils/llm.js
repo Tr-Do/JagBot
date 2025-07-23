@@ -12,7 +12,7 @@ export async function getLLMResponse(input, token) {
 export async function getLLMRephrases(input) {
     try {
         console.log("INPUT >>>", input);
-        const res = await fetch('http://localhost:3000/api/rephrase', {
+        const res = await fetch('http://localhost:3000/llm/rephrase', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
