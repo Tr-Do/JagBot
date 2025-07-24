@@ -20,6 +20,15 @@
 
 
 
+## Architecture Diagrams
+
+### Student Flow  
+![Student Flow](./assets/student-diagram.png)
+
+### Admin Flow  
+![Admin Flow](./assets/admin-diagram.png)
+
+
 
 ## Setup instructions
 - Clone the repo
@@ -32,7 +41,7 @@ OPENAI_API_KEY=your_api_key
 ```
 npm install
 ```
-- Install and run Redis (Windows)
+- Install Redis and run (Windows):
 ```
 redis-server.exe redis-windows.conf
 ```
