@@ -4,7 +4,7 @@ import { generateToken, isTokenValid, revokeToken, listToken } from '../redis.js
 const rateLimit = new Map();
 
 
-// Validate token (5 attempts/IP)
+// GET-based token validation (5 attempts/IP) to prevent abuse (Block 1 hour if exceeded)
 router.get('/token/validate', async (req, res) => {
     const { token } = req.query;
     const ip = req.ip;
@@ -28,10 +28,12 @@ router.get('/token/validate', async (req, res) => {
         return res.status(401).send('Invalid Token');
     }
 
-    // Reset attempt when success
+    // Reset attempt when validation is successful
     rateLimit.set(ip, { count: 0, firstFail: null, blockUntil: null });
     return res.status(200).send('Valid');
 });
+
+// POST-based token validation for client scripts and frontend
 router.post('/token/validate', async (req, res) => {
     const { token } = req.body;
     if (!token || typeof token != 'string' || token.length !== 5) {
@@ -49,6 +51,7 @@ router.post('/token/validate', async (req, res) => {
     }
 });
 
+// Generate new token if student ID matches pattern
 router.post('/token/generate', async (req, res) => {
     const { studentId } = req.body;
     const idPattern = /^[JK]\d{8}$/i;
@@ -58,10 +61,12 @@ router.post('/token/generate', async (req, res) => {
     const token = await generateToken(studentId);
     res.json({ token });
 });
+
 router.get('/token/list', async (req, res) => {
     const data = await listToken();
     res.json(data);
 })
+
 router.post('/token/revoke', async (req, res) => {
     const { token } = req.body;
     await revokeToken(token);

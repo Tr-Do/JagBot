@@ -3,6 +3,8 @@ const router = express.Router();
 import authMiddleware from '../middleware/auth.js';
 
 router.post('/chat', authMiddleware, async (req, res) => {
+
+    // Dynamically import OpenAI SDK to reduce cold-start time
     const OpenAI = (await import('openai')).default;
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const { input } = req.body;

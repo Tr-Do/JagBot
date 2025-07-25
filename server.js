@@ -10,32 +10,35 @@ import chatRoutes from './routes/chat.js';
 import tokenRoutes from './routes/token.js';
 import adminRoutes from './routes/admin.js';
 
+// In ESM __dirname and __filename are undefined. The next 2 lines reconstruct them for path resolution
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load env file
+// Load environment variables at startup to configure AI fallback, admin auth and other behaviors
 dotenv.config({ path: path.join(__dirname, './.env') });
 
-// Initiate Express, AI
+//
 const app = express();
-console.log('Serving static from:', path.join(__dirname, 'public'));
+console.log('Serving static at port:', path.join(__dirname, 'public'));
 
+// Serve static file from /public directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Initialize OpenAI client using API key for fall back response
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const port = 3000;
 
-// Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json());        // Parse incoming JSON request bodies
 app.use('/api', chatRoutes);
 app.use('/api', tokenRoutes);
-app.use('/llm', llmRouter)
+app.use('/llm', llmRouter)      // Route AI fallback
 app.use('/api', adminRoutes);
 
 const logFilePath = path.join(__dirname, 'logs', 'unmatched_input.log');
 
-// Log unmatched input
+// Log unmatched user inputs for further rule and fallback integration
 app.post('/log-unmatched', (req, res) => {
     const logData = JSON.stringify(req.body) + '\n';
     fs.mkdir(path.dirname(logFilePath), { recursive: true }, (err) => {

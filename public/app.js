@@ -2,6 +2,7 @@ import { route, getContext } from './core/logic.js';
 import { addHumanMessage, addBotMessage } from './components/chat.js';
 import { handleMessage } from './utils/rateLimiter.js';
 
+// Validate token on load to unlock chat UI
 (async () => {
     const token = sessionStorage.getItem('access_token');
     if (!token) return;
@@ -17,7 +18,7 @@ import { handleMessage } from './utils/rateLimiter.js';
     }
 })();
 
-
+// Log input/output with snapshot for debugging/analysis
 function logInteraction(userInput, botReply) {
     const context = getContext();
     console.log(JSON.stringify({
@@ -28,9 +29,8 @@ function logInteraction(userInput, botReply) {
     }, null, 2))
 }
 
-// Token access control
+// Disable chat UI if token is missing or expired
 document.addEventListener('DOMContentLoaded', () => {
-    // Check token
     const token = sessionStorage.getItem('access_token');
     const issueAt = parseInt(sessionStorage.getItem('tokenTimestamp'), 10);
     const isValid = token && Date.now() - issueAt <= 30 * 60 * 1000;
@@ -53,16 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
 });
 
-// Validate token
 function isTokenValid() {
     const issuedAt = parseInt(sessionStorage.getItem('tokenTimestamp'), 10);
     return Date.now() - issuedAt <= 30 * 60 * 1000;
 }
 
-// SessionStorage.setItem('access_token', userProvidedToken);
 async function validateToken() {
     const token = sessionStorage.getItem('access_token');
     if (!token) return false;
@@ -76,18 +73,16 @@ async function validateToken() {
     return res.ok && data.valid;
 }
 
-// Input handler
 async function handleSend() {
     if (!isTokenValid()) return;
 
     const inputt = document.getElementById('prompt');
 
-    // Sanitize input
     const content = inputt.value.replace(/\s+/g, ' ').trim();
     if (!content)
         return;
 
-    // Rate limiting
+    // Block input if user is rate limited
     const result = handleMessage('default-user');
     if (result.blocked) {
         const warning =
@@ -102,7 +97,6 @@ async function handleSend() {
     inputt.disabled = true;
     inputt.placeholder = 'Waiting for response...';
 
-    // Display typing bubble
     const log = document.querySelector('.log');
     const typingBubble = document.createElement('div');
     typingBubble.className = 'bot typing-bubble';
@@ -110,7 +104,6 @@ async function handleSend() {
     log.appendChild(typingBubble);
     log.scrollTop = log.scrollHeight;
 
-    // AI fallback
     const token = sessionStorage.getItem('access_token');
     const routed = await route(content);
 
@@ -126,24 +119,12 @@ async function handleSend() {
         const data = await response.json();
         reply = data.reply || '[Error]'
     }
-    // Remove bubble, showing bot message
     typingBubble.remove();
     addBotMessage(reply);
     logInteraction(content, reply);
     log.scrollTop = log.scrollHeight;
     inputt.disabled = false;
     inputt.focus();
-}
-
-// Generate token
-async function fetchTokenFromServer() {
-    const res = await fetch('http://localhost:3000/api/token/generate-token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentId: 'guest' })
-    });
-    const data = await res.json();
-    return data.token;
 }
 
 document.getElementById('submit-token').addEventListener('click', async () => {

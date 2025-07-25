@@ -1,9 +1,12 @@
 import express from 'express';
 const router = express.Router();
 
+// In-memory storage for multi-turn chat sessions, keyed by token
 const sessionMemory = new Map();
 
 router.post('/chat', async (req, res) => {
+
+    // Dynamically import OpenAI SDK to reduce cold-start time
     const OpenAI = (await import('openai')).default;
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const { input, token } = req.body;
@@ -26,7 +29,7 @@ router.post('/chat', async (req, res) => {
         const reply = completion.choices[0].message.content;
         messages.push({ role: 'assistant', content: reply });
 
-        // Update session
+        // Truncate 20 messages to control memory size
         sessionMemory.set(token, messages.slice(-20));
         res.json({ reply });
     } catch (err) {

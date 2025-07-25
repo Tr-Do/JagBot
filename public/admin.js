@@ -1,3 +1,4 @@
+// Invoke function to enforce authentication before page access
 (async function enforceAdminAuth() {
     const authed = sessionStorage.getItem('admin_auth');
     if (authed === 'true') return;
@@ -45,11 +46,12 @@ async function generateToken() {
     } catch (err) {
         output.textContent = 'Request failed';
     }
-
 }
+
 function isExpired(createdAt) {
     return Date.now() - createdAt > 30 * 60 * 1000;
 }
+
 async function loadToken() {
     const res = await fetch('/api/token/list');
     const data = await res.json();
@@ -58,7 +60,6 @@ async function loadToken() {
 
     data.forEach(t => {
         const expired = Date.now() - t.createdAt > 30 * 60 * 1000;
-
 
         let status;
         let statusClass;
@@ -85,6 +86,7 @@ async function loadToken() {
         table.appendChild(row);
     });
 }
+
 async function revokeToken(token) {
     await fetch('/api/token/revoke', {
         method: 'POST',

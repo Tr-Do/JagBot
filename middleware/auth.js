@@ -1,6 +1,7 @@
 import { isTokenValid } from '../redis.js';
 
 export default async function (req, res, next) {
+    // Extract token from body, query, or header for access validation
     let token = null;
 
     if (req.body && req.body.token) {
@@ -8,7 +9,7 @@ export default async function (req, res, next) {
     } else if (req.query && req.query.token) {
         token = req.query.token;
     } else if (req.headers['authorization']) {
-        token = req.headers['authorization'].replace('Bearer ', '');
+        token = req.headers['authorization'].replace('Bearer ', '');    // Strip Bearer prefix to retrieve token
     }
 
     if (!token) return res.status(401).send('Access required');
