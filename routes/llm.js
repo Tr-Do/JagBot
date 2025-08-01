@@ -1,20 +1,18 @@
 import express from 'express';
 const router = express.Router();
 
-// In-memory storage for multi-turn chat sessions, keyed by token
 const sessionMemory = new Map();
 
 router.post('/chat', async (req, res) => {
-
-    // Dynamically import OpenAI SDK to reduce cold-start time
     const OpenAI = (await import('openai')).default;
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const { input, token } = req.body;
-    if (!input || !token) return res.status(400).json({ error: "Missing input or token" });
+    const { input } = req.body;
+    if (!input) return res.status(400).json({ error: "Missing input" });
 
     // Initialize session messages
-    let messages = sessionMemory.get(token) || [
-        { role: 'system', content: 'You are an assistant for college campus queries.' }
+    let messages = [
+        { role: 'system' },
+        { content: 'You are an assistant for college campus queries.' }
     ];
 
     messages.push({ role: 'user', content: input });
@@ -28,9 +26,6 @@ router.post('/chat', async (req, res) => {
         });
         const reply = completion.choices[0].message.content;
         messages.push({ role: 'assistant', content: reply });
-
-        // Truncate 20 messages to control memory size
-        sessionMemory.set(token, messages.slice(-20));
         res.json({ reply });
     } catch (err) {
         res.status(500).json({ error: 'Chat failed', detail: err.message });
