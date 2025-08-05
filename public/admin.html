@@ -9,24 +9,13 @@
 </head>
 
 <body>
-    <div class="panel">
-        <h1>ADMIN CONTROL PANEL</h1>
-        <input type="text" id="studentId" placeholder="STUDENT ID">
-        <button onclick="generateToken()">Generate Token</button>
-        <pre id="newToken"></pre>
-        <table>
-            <thead>
-                <tr>
-                    <th>Student ID</th>
-                    <th>Token</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody id="tokenTable"></tbody>
-        </table>
+    <h1>ADMIN PANEL</h1>
+    <div id="btn">
+        <button id="fb">View Fallback Questions</button>
+        <button id="db">View Database</button>
+        <button id="change">View change log</button>
     </div>
+    <div id="content"></div>
     <script src="admin.js" defer></script>
 </body>
 

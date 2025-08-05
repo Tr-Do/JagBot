@@ -2,23 +2,6 @@ import { route, getContext } from './core/logic.js';
 import { addHumanMessage, addBotMessage } from './components/chat.js';
 import { handleMessage } from './utils/rateLimiter.js';
 
-// Validate token on load to unlock chat UI
-(async () => {
-    const token = sessionStorage.getItem('access_token');
-    if (!token) return;
-
-    const res = await fetch('/api/token/validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
-    });
-    const data = await res.json();
-    if (res.ok && data.valid) {
-        document.getElementById('token-gate').style.display = 'none';
-    }
-})();
-
-// Log input/output with snapshot for debugging/analysis
 function logInteraction(userInput, botReply) {
     const context = getContext();
     console.log(JSON.stringify({
@@ -29,120 +12,106 @@ function logInteraction(userInput, botReply) {
     }, null, 2))
 }
 
-// Disable chat UI if token is missing or expired
 document.addEventListener('DOMContentLoaded', () => {
-    const token = sessionStorage.getItem('access_token');
-    const issueAt = parseInt(sessionStorage.getItem('tokenTimestamp'), 10);
-    const isValid = token && Date.now() - issueAt <= 30 * 60 * 1000;
-
-    if (!isValid) {
-        console.warn("Token missing or expired. Block all chat");
-        document.getElementById('prompt').disabled = true;
-        document.getElementById('sendbtn').disabled = true;
-        return;
-    }
     const input = document.getElementById('prompt');
+    if (!input) return;
+
+    // Focus cursor on input upon loading
     input.focus();
 
-    if (isValid) {
-        document.getElementById('sendbtn').addEventListener('click', handleSend);
-        input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-            }
-        });
-    }
+    // Refocus when clicking outside input
+    document.addEventListener('click', (e) => {
+        if (e.target !== input && !input.contains(e.target)) {
+            input.focus();
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (document.activeElement !== input && e.key.length === 1) {
+            input.focus();
+        }
+    });
 });
 
-function isTokenValid() {
-    const issuedAt = parseInt(sessionStorage.getItem('tokenTimestamp'), 10);
-    return Date.now() - issuedAt <= 30 * 60 * 1000;
-}
+// Add event to send button
+document.getElementById('sendbtn').addEventListener('click', function () {
+    const inputt = document.getElementById('prompt')
+    const content = inputt.value.replace(/\s+/g, ' ').trim();           // Remove empty space, sanitize input
 
-async function validateToken() {
-    const token = sessionStorage.getItem('access_token');
-    if (!token) return false;
-
-    const res = await fetch('/api/token/validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
-    });
-    const data = await res.json();
-    return res.ok && data.valid;
-}
-
-async function handleSend() {
-    if (!isTokenValid()) return;
-
-    const inputt = document.getElementById('prompt');
-
-    const content = inputt.value.replace(/\s+/g, ' ').trim();
-    if (!content)
+    if (!content) {
         return;
-
-    // Block input if user is rate limited
+    }
     const result = handleMessage('default-user');
     if (result.blocked) {
-        const warning =
-            result.reason === 'cooldown' ? 'Please wait before sending another message'
-                : result.reason === 'abuse' ? 'Please wait before sending another message'
-                    : 'Access blocked';
+        let warning = '';
+
+        if (result.reason === 'cooldown') {
+            warning = 'Please wait before sending another message'
+        } else if (result.reason === 'abuse') {
+            warning = 'Too many message. Calm down';
+        } else {
+            warning = 'Access blocked';
+        }
         addBotMessage(warning);
         return;
     }
+
     addHumanMessage(content);
-    inputt.value = '';
-    inputt.disabled = true;
-    inputt.placeholder = 'Waiting for response...';
+    inputt.value = ''
 
-    const log = document.querySelector('.log');
-    const typingBubble = document.createElement('div');
-    typingBubble.className = 'bot typing-bubble';
-    typingBubble.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-    log.appendChild(typingBubble);
-    log.scrollTop = log.scrollHeight;
+    const input = document.getElementById('prompt');
+    input.disabled = true;
+    input.placeholder = 'Waiting for response...';
 
-    const token = sessionStorage.getItem('access_token');
-    const routed = await route(content);
+    setTimeout(async () => {
 
-    let reply;
-    if (routed) {
-        reply = routed;
-    } else {
-        const response = await fetch('/llm/chat', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ input: content, token })
-        });
-        const data = await response.json();
-        reply = data.reply || '[Error]'
+        // Disable textarea while waiting for bot response
+        input.disabled = true;
+        input.placeholder = 'Type in your question...';
+
+        // Display bubble effect before bot response
+        const log = document.querySelector('.log');
+        const typingBubble = document.createElement('div');
+        typingBubble.className = 'bot';
+        typingBubble.classList.add('typing-bubble');
+        typingBubble.innerHTML = `
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            `;
+        typingBubble.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span>`;
+        log.appendChild(typingBubble);
+        log.scrollTop = log.scrollHeight;
+
+        //Wait for real response
+        const routed = await route(content);
+
+        let reply;
+        if (routed) {
+            reply = routed;
+        } else {
+            const response = await fetch('/llm/chat', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ input: content })
+            });
+            const data = await response.json();
+            const reply = data.reply || '[No reply received]';
+        }
+        typingBubble.remove();
+        addBotMessage(reply);
+        logInteraction(content, reply);
+        log.scrollTop = log.scrollHeight;       //Keep scrolling down after each response
+
+        // Enable input after bot response
+        input.disabled = false;
+        input.focus();
+    }, 1000);
+})
+
+// Add event to Enter key
+document.getElementById('prompt').addEventListener('keydown', function (e) {
+    if (e.key == 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById('sendbtn').click();
     }
-    typingBubble.remove();
-    addBotMessage(reply);
-    logInteraction(content, reply);
-    log.scrollTop = log.scrollHeight;
-    inputt.disabled = false;
-    inputt.focus();
-}
-
-document.getElementById('submit-token').addEventListener('click', async () => {
-    const token = document.getElementById('token-input').value.trim().toUpperCase();
-    const errorBox = document.getElementById('token-error');
-
-    const res = await fetch('/api/token/validate', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token })
-    });
-    const data = await res.json();
-
-    if (res.ok && data.valid) {
-        sessionStorage.setItem('access_token', token);
-        sessionStorage.setItem('tokenTimestamp', Date.now().toString());
-        document.getElementById('token-gate').style.display = 'none';
-    } else {
-        errorBox.textContent = 'Invalid or expired token';
-    }
-});
+})

@@ -1,38 +1,22 @@
-th,
-td {
-
-    border: 1px solid black;
-    padding: 0.5rem 4rem;
+body {
+    height: 100%;
 }
 
-table {
-    margin-top: 4rem;
-    margin-left: auto;
-    margin-right: auto;
-    border-collapse: collapse;
+#btn {
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
 }
 
-input {
+button {
+    padding: 12px 24px;
+    font-size: 24px;
+
+}
+
+h1 {
     text-align: center;
-}
-
-.panel {
-    width: fit-content;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.status-active {
-    color: green;
-    font-weight: bold;
-}
-
-.status-expired {
-    color: orange;
-    font-weight: bold;
-}
-
-.status-revoked {
-    color: red;
-    font-weight: bold;
+    padding-top: 10rem;
 }

@@ -1,9 +1,9 @@
-export async function getLLMResponse(input, token) {
+export async function getLLMResponse(input) {
 
     const res = await fetch('http://localhost:3000/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input, token })
+        body: JSON.stringify({ input })
     });
     const data = await res.json();
     return data.reply || 'AI error';

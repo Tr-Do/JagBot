@@ -1,4 +1,7 @@
 import express from 'express';
+import pkg from 'pg';
+const { Pool } = pkg;
+
 const router = express.Router();
 
 router.post('/admin/login', (req, res) => {
@@ -11,4 +14,29 @@ router.post('/admin/login', (req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 })
+
+const pool = new Pool({
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    password: process.env.PGPASSWORD,
+    port: process.env.PGPORT,
+});
+
+router.get('/api/fallbacks', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT question, ansewr, timemstamp
+            FROM fallback_log
+            ORDER BY timestamp DESC
+            LIMIT 100
+            `);
+        res.json(result.rows);
+    } catch (err) {
+        console.error('DB ERROR:', err);
+        res.status(500).json({ error: "DB failed" });
+    }
+});
+
+
 export default router;
