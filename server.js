@@ -8,6 +8,7 @@ import cors from 'cors';
 import llmRouter from './routes/llm.js';
 import chatRoutes from './routes/chat.js';
 import adminRoutes from './routes/admin.js';
+import { Pool } from 'pg';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,19 +31,29 @@ app.use('/api', chatRoutes);
 app.use('/llm', llmRouter)
 app.use(adminRoutes);
 
-const logFilePath = path.join(__dirname, 'logs', 'unmatched_input.log');
+const pool = new Pool({
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    databaes: process.env.PGDATABASE,
+    password: process.env.PGPASSWORD,
+    port: process.env.PGPORT,
+});
 
-// Log unmatched input
-app.post('/log-unmatched', (req, res) => {
-    const logData = JSON.stringify(req.body) + '\n';
-    fs.mkdir(path.dirname(logFilePath), { recursive: true }, (err) => {
-        if (err) return res.status(500).send('Fail to create log directory');
+app.post('/log-unmatched', async (req, res) => {
+    const { question, answer } = req.body;
 
-        fs.appendFile(logFilePath, logData, (err) => {
-            if (err) return res.status(500).send('Failed to write log');
-            res.status(200).send('Logged');
-        });
-    });
+    if (!question || !answer) {
+        return res.status(400).json({ error: 'Missing question or answer' });
+    }
+    try {
+        await pool.query(
+            `INSERT INTO fallback_log`, [question, answer]
+        );
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.error('Fail to insert fallback:', err);
+        res.status(500).json({ error: 'Database insertion failed' });
+    }
 });
 
 app.get('/', (req, res) => {

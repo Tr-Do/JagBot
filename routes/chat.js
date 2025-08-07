@@ -1,5 +1,6 @@
 import express from 'express';
 const router = express.Router();
+import { fetch } from 'undici';
 
 router.post('/chat', async (req, res) => {
     const OpenAI = (await import('openai')).default;
@@ -11,6 +12,19 @@ router.post('/chat', async (req, res) => {
             messages: [{ role: "user", content: input }],
         });
         const reply = completion.choices[0].message.content;
+
+        const isFallback = reply.toLowerCase().includes("i don't have that information");
+
+        if (isFallback) {
+            await fetch('http://localhost:3000/log-unmatched', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    question: input,
+                    answer: reply
+                })
+            });
+        }
         res.send({ reply });
     } catch (err) {
         res.status(500).send({ err: "AI fails" });
