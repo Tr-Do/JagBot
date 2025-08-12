@@ -34,7 +34,7 @@ app.use(adminRoutes);
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
-    databaes: process.env.PGDATABASE,
+    database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
     port: process.env.PGPORT,
 });
@@ -46,9 +46,14 @@ app.post('/log-unmatched', async (req, res) => {
         return res.status(400).json({ error: 'Missing question or answer' });
     }
     try {
-        await pool.query(
-            `INSERT INTO fallback_log`, [question, answer]
+        await pool.query(`
+            CREATE TABLE IF NOT EXIST fallback_log (
+                id BIGSERIAL PRIMARY KEY,
+                question TEXT NOT NULL,
+                answer TEXT NOT NULL,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now())
         );
+    `);
         res.status(200).json({ success: true });
     } catch (err) {
         console.error('Fail to insert fallback:', err);

@@ -3,20 +3,27 @@ body {
 }
 
 #btn {
-    height: 50vh;
+    height: 20vh;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10%;
+    padding-bottom: 0px;
 }
 
 button {
     padding: 12px 24px;
     font-size: 24px;
-
 }
 
 h1 {
     text-align: center;
     padding-top: 10rem;
+}
+
+#content {
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
 }
