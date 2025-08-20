@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
 import express from 'express';
 import OpenAI from 'openai';
 import cors from 'cors';
@@ -9,6 +8,7 @@ import llmRouter from './routes/llm.js';
 import chatRoutes from './routes/chat.js';
 import adminRoutes from './routes/admin.js';
 import { Pool } from 'pg';
+import cookieParser from 'cookie-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +29,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', chatRoutes);
 app.use('/llm', llmRouter)
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(adminRoutes);
 
 const pool = new Pool({
@@ -47,7 +48,7 @@ app.post('/log-unmatched', async (req, res) => {
     }
     try {
         await pool.query(`
-            CREATE TABLE IF NOT EXIST fallback_log (
+            CREATE TABLE IF NOT EXISTS fallback_log (
                 id BIGSERIAL PRIMARY KEY,
                 question TEXT NOT NULL,
                 answer TEXT NOT NULL,

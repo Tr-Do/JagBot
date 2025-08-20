@@ -12,19 +12,29 @@ const pool = new Pool({
     port: process.env.PGPORT,
 });
 
+
+
 router.post('/admin/login', (req, res) => {
     const { password } = req.body;
     if (!password) return res.status(400).json({ error: 'Password required' });
-    if (password === process.env.ADMIN_PASSWORD) return res.status(200).json({ ok: true });
+    if (password === process.env.ADMIN_PASSWORD) {
+        res.cookie('admin', '1', { httpOnly: true, signed: true, sameSite: 'lax' });
+        return res.status(200).json({ ok: true });
+    };
     return res.status(401).json({ error: 'Unauthorized' });
 })
 
-router.get('/api/fallbacks', async (req, res) => {
+function requireAdmin(req, res, next) {
+    if (req.signedCookies.admin === '1') return next();
+    res.sendStatus(401);
+}
+
+router.get('/api/fallbacks', requireAdmin, async (req, res) => {
     try {
         const { rows } = await pool.query(`
-            SELECT question, answer, 'timestamp' AS time
+            SELECT question, answer, "timestamp" AS time
             FROM fallback_log
-            ORDER BY 'timestamp' DESC
+            ORDER BY "timestamp" DESC
             LIMIT 200
             `);
         res.json(rows);
