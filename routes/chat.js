@@ -1,33 +1,61 @@
 import express from 'express';
-const router = express.Router();
 import { fetch } from 'undici';
+import OpenAI from 'openai';
+
+const router = express.Router();
+
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// Abort AI request when it takes too long
+const OPENAI_TIMEOUT_MS = 10000;
+
+const FALLBACK_PHRASE = "i don't have that information";
 
 router.post('/chat', async (req, res) => {
-    const OpenAI = (await import('openai')).default;
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const { input } = req.body;
-    try {
-        const completion = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [{ role: "user", content: input }],
-        });
-        const reply = completion.choices[0].message.content;
 
-        const isFallback = reply.toLowerCase().includes("i don't have that information");
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), OPENAI_TIMEOUT_MS);
+
+    try {
+        const completion = await openai.chat.completions.create(
+            {
+                model: "gpt-4o",
+                messages: [{ role: "user", content: input }],
+            },
+            { signal: ac.signal }
+        );
+        let reply = "";
+        if (
+            completion && completion.choices &&
+            completion.choices[0] &&
+            completion.choices[0].message
+        ) {
+            reply = completion.choices[0].message.content;
+        }
+
+        const replyLowerCase = reply.toLowerCase();
+        const isFallback = replyLowerCase.includes(FALLBACK_PHRASE);
 
         if (isFallback) {
-            await fetch('http://localhost:3000/log-unmatched', {
+            fetch('http://localhost:3000/log-unmatched', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     question: input,
                     answer: reply
                 })
-            });
+            }).catch(() => { });
         }
         res.send({ reply });
     } catch (err) {
-        res.status(500).send({ err: "AI fails" });
+        if (err && err.name === 'AbortError') {
+            res.status(504).send({ err: 'AI timeout' });
+        } else {
+            res.status(500).send({ err: "AI fails" });
+        }
+    } finally {
+        clearTimeout(t);
     }
 });
 
