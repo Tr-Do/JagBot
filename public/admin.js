@@ -7,11 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!change || !fallback || !database || !content) {
         console.error('Admin UI: missing elements'); return;
     }
-
+    let authed = false;
+    async function ensureAuth() {
+        if (authed) return;
+        const pwd = prompt('Admin password:');
+        const r = await fetch('/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ password: pwd })
+        });
+        if (!r.ok) throw new Error('Login failed');
+        authed = true;
+    }
     fallback.addEventListener('click', async () => {
         content.innerHTML = '<p>Loading fallback questions…</p>';
         try {
-            const r = await fetch('/api/fallbacks');
+            await ensureAuth();
+            const r = await fetch('/api/fallbacks', { credentials: 'include' });
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             const data = await r.json();
             content.innerHTML = renderFallbackTable(data);

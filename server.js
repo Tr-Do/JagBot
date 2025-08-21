@@ -27,9 +27,9 @@ const port = 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use('/api', chatRoutes);
 app.use('/llm', llmRouter)
-app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(adminRoutes);
 
 const pool = new Pool({
