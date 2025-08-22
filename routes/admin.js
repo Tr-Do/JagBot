@@ -56,7 +56,7 @@ router.get('/api/fallbacks', requireAdmin, async (req, res) => {
     if (!Number.isFinite(offset) || offset < 0) offset = 0;
 
     const sql = `
-    SELECT question, answer, created_at
+    SELECT question, answer, created_at as TIME
     FROM fallback_log
     WHERE ($1::text         IS NULL OR question ILIKE '%'||$1||'%' OR answer ILIKE '%'||$1||'%')
        AND ($2::timestamptz IS NULL OR created_at >= $2)
@@ -67,10 +67,7 @@ router.get('/api/fallbacks', requireAdmin, async (req, res) => {
 
     try {
         const result = await pool.query(sql, [q, from, to, limit, offset]);
-        res.json({
-            items: result.rows,
-            pagination: { limit, offset, count: result.rows.length }
-        });
+        res.json(result.rows);
     } catch (err) {
         console.error('DB ERROR:', err);
         res.status(500).json({ error: 'DB query failed' });

@@ -39,7 +39,7 @@ router.post('/chat', async (req, res) => {
         const isFallback = replyLowerCase.includes(FALLBACK_PHRASE);
 
         if (isFallback) {
-            fetch('http://localhost:3000/log-unmatched', {
+            fetch('/log-unmatched', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

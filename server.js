@@ -52,9 +52,13 @@ app.post('/log-unmatched', async (req, res) => {
                 id BIGSERIAL PRIMARY KEY,
                 question TEXT NOT NULL,
                 answer TEXT NOT NULL,
-                created_at TIMESTAMPTZ NOT NULL DEFAULT now())
-        );
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        )
     `);
+        await pool.query(
+            'INSERT INTO fallback_log (question, answer) VALUES ($1, $2)',
+            [question, answer]
+        )
         res.status(200).json({ success: true });
     } catch (err) {
         console.error('Fail to insert fallback:', err);
